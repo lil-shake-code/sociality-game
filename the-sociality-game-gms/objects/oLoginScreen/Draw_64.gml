@@ -11,6 +11,9 @@ draw_set_halign(fa_center)
 draw_set_valign(fa_center)
 draw_set_color(c_black)
 draw_text_transformed(bw*0.5, bh*0.2 , "The Sociality Game" ,3*sc,3*sc,0)
+
+draw_text_transformed(bw*0.5, bh*0.3 , "Enter to PLAY" ,3*sc,3*sc,0)
+draw_sprite_ext(sBatS ,floor((0.008)*current_time) mod 4,bw*0.5, bh*0.4 ,20*sc,20*sc , 0,c_white ,1 )
 if(keyboard_check_pressed(vk_enter)){
 	global.username = get_string("Enter your name","")
 	room_goto(rGame)

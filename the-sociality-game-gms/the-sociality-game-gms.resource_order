@@ -17,6 +17,7 @@
     {"name":"Timelines","order":8,"path":"folders/Timelines.yy",},
   ],
   "ResourceOrderSettings": [
+    {"name":"oOtherPlayer","order":3,"path":"objects/oOtherPlayer/oOtherPlayer.yy",},
     {"name":"oPlayer","order":1,"path":"objects/oPlayer/oPlayer.yy",},
     {"name":"rGame","order":1,"path":"rooms/rGame/rGame.yy",},
     {"name":"sBatA","order":3,"path":"sprites/sBatA/sBatA.yy",},

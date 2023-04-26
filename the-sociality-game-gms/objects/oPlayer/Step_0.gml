@@ -41,14 +41,12 @@ camera_set_view_pos(view_camera[0], xPos ,  yPos)
 
 
 //Multiplayer stuff
-
 var Buffer = buffer_create(1, buffer_grow ,1);
 var data = ds_map_create();
-data[? "eventName"] = //WHATEVER EVENT NAME
-data[?"name"] = get_string("Enter name", "no name")
-	
+data[? "eventName"] = "state_update"
+data[? "clientId"] = global.clientId
+data[?"x"] = x
+data[?"y"] = y	
 buffer_write(Buffer , buffer_text  , json_encode(data));
-network_send_raw(socket , Buffer , buffer_tell(Buffer));
+network_send_raw(oClient.socket , Buffer , buffer_tell(Buffer));
 ds_map_destroy(data);
-
-

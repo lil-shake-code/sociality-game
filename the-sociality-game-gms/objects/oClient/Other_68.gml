@@ -63,6 +63,15 @@ switch(async_load[?"type"]){
 					new_enemy.enemy_username = realData.username
 				}
 				break;
+				
+				case "destroy_player":
+				with(oOtherPlayer){
+					if(clientId == realData.clientId){
+						instance_destroy()
+						
+					}
+				}
+				break;
 		}	
 		break;
 		

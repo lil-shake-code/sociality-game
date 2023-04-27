@@ -1,0 +1,6 @@
+runtime: nodejs14
+
+env_variables:
+  PORT: 3000
+
+entrypoint: node server.js

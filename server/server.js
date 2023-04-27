@@ -72,13 +72,36 @@ wss.on("connection", (ws) => {
         break;
     }
   });
-});
-// Start the server
-server.listen(3000, () => {
-  console.log("Server started on port   " + server.address().port);
+
+  // Handle closing connection
+  ws.on("close", () => {
+    console.log("Client disconnected");
+    for (let i in players) {
+      if (players[i].ws == ws) {
+        var sendThis = {
+          eventName: "destroy_player",
+          clientId: players[i].clientId,
+        };
+        //remove this player from the players array
+        players.splice(i, 1);
+        //tell everyone that this player is destroyed
+        for (let j in players) {
+          players[j].ws.send(JSON.stringify(sendThis));
+        }
+        break;
+      }
+    }
+  });
 });
 
-//every 1 second print the players array
+//setup for google app engine
+const PORT = process.env.PORT || 3000;
+//server listen from all ip's 0.0.0.0
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server started on port ${server.address().port} :)`);
+});
+
+/////every 1 second print the players array
 // setInterval(() => {
 //   console.log(players);
 // }, 1000);

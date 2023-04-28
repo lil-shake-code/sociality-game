@@ -1,12 +1,17 @@
-// Load the required modules
-const http = require("http");
+//express websocket server
+const express = require("express");
 const WebSocket = require("ws");
 
-// Create a new HTTP server
-const server = http.createServer();
+// [START appengine_websockets_app]
+const app = require("express")();
+app.set("view engine", "pug");
 
-// Create a new WebSocket server
+const server = require("http").Server(app);
 const wss = new WebSocket.Server({ server });
+
+app.get("/", (req, res) => {
+  res.send("Hello world");
+});
 
 //Client Id's array
 var clientCount = 0;
@@ -94,14 +99,13 @@ wss.on("connection", (ws) => {
   });
 });
 
-//setup for google app engine
-const PORT = process.env.PORT || 3000;
-//server listen from all ip's 0.0.0.0
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server started on port ${server.address().port} :)`);
-});
+if (module === require.main) {
+  const PORT = parseInt(process.env.PORT) || 8080;
+  server.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`);
+    console.log("Press Ctrl+C to quit.");
+  });
+}
+// [END appengine_websockets_app]
 
-/////every 1 second print the players array
-// setInterval(() => {
-//   console.log(players);
-// }, 1000);
+module.exports = server;

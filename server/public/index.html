@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Sociality Game Server</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Load the Google API Client Library for JavaScript -->
+    <script src="https://apis.google.com/js/api.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>The Sociality Game</h1>
+      <div class="buttons">
+        <button id="record-btn">Record</button>
+        <button id="stop-btn">Stop Recording</button>
+      </div>
+      <table id="files-table">
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Last Modified</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be added dynamically using JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,16 +1,57 @@
-//express websocket server
-const express = require("express");
-const WebSocket = require("ws");
+const { google } = require("googleapis");
+const { Storage } = require("@google-cloud/storage");
+const gapi = google.storage("v1");
+//gcp credentials for the storage bucket
 
+// Replace with your own values
+const projectId = "the-sociality-game";
+const bucketName = "the-sociality-game-player-data";
 // [START appengine_websockets_app]
 const app = require("express")();
+const createStorageClient = require("./storage");
+
+// Route to list all objects in a bucket
+app.get("/list-objects", async (req, res) => {
+  try {
+    // Create an authenticated client for the Google Cloud Storage API
+    const storage = await createStorageClient();
+
+    // List all objects in the "my-bucket" bucket
+    const response = await storage.objects.list({
+      bucket: bucketName,
+    });
+
+    // Send the list of objects as the response
+    res.send(response.data);
+  } catch (error) {
+    console.error("Error listing objects:", error);
+    res.status(500).send("Error listing objects");
+  }
+});
+
 app.set("view engine", "pug");
+//express public static webpage
+app.use(require("express").static("public"));
+
+// List all objects in the "my-bucket" bucket
+const storage = new Storage();
+async function listFiles() {
+  const [files] = await storage.bucket(bucketName).getFiles();
+  console.log("Files:");
+  files.forEach((file) => {
+    console.log(file.name);
+  });
+}
+listFiles().catch(console.error);
+
+const WebSocket = require("ws");
 
 const server = require("http").Server(app);
 const wss = new WebSocket.Server({ server });
 
+//Use an static html file for the main page
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.sendFile(__dirname + "/index.html");
 });
 
 //Client Id's array

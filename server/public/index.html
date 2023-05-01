@@ -1,30 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>The Sociality Game Server</title>
+    <meta charset="UTF-8" />
+    <title>The Sociality Game Admin</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Load the Google API Client Library for JavaScript -->
-    <script src="https://apis.google.com/js/api.js"></script>
   </head>
   <body>
     <div class="container">
-      <h1>The Sociality Game</h1>
-      <div class="buttons">
-        <button id="record-btn">Record</button>
-        <button id="stop-btn">Stop Recording</button>
-      </div>
-      <table id="files-table">
+      <h1 class="title">The Sociality Game Admin</h1>
+      <button id="start-btn" class="btn">Start Recording</button>
+      <p id="status" class="status">Not Recording</p>
+      <button id="stop-btn" class="btn" disabled>Stop Recording</button>
+      <table id="table" class="table">
         <thead>
           <tr>
-            <th>File Name</th>
-            <th>Last Modified</th>
+            <th>ID</th>
+            <th>Filename</th>
+            <th>S</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Table rows will be added dynamically using JavaScript -->
+          <tr>
+            <td>0</td>
+            <td>Sample</td>
+            <td>0</td>
+          </tr>
         </tbody>
       </table>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script src="index.js"></script>
   </body>

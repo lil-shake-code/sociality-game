@@ -1,8 +1,6 @@
 const { google } = require("googleapis");
 const { Storage } = require("@google-cloud/storage");
 const gapi = google.storage("v1");
-//gcp credentials for the storage bucket
-
 // Replace with your own values
 const projectId = "the-sociality-game";
 const bucketName = "the-sociality-game-player-data";
@@ -43,6 +41,98 @@ async function listFiles() {
   });
 }
 listFiles().catch(console.error);
+
+/*
+ *RECORDING CSV FILE
+ */
+//write to a csv file and store it in the bucket after 1 minute
+// [client id , name , x , y]
+var recordingData = [];
+var recording = false;
+var seconds = 0;
+var recordingInterval = setInterval(() => {
+  if (recording) {
+    console.log("Recording data");
+    seconds++;
+    //write all players client id , name , x , y to a csv file row by row along with time in seconds
+    var data = "";
+    for (let i in players) {
+      data +=
+        players[i].clientId +
+        "," +
+        players[i].name +
+        "," +
+        players[i].x +
+        "," +
+        players[i].y +
+        "," +
+        seconds +
+        "\n";
+    }
+    recordingData.push(data);
+  }
+}, 1000);
+//allow all cors
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+//if someone makes a get request at a particular url, send them an array
+app.get("/record", (req, res) => {
+  console.log("Someone made a request at /record");
+  if (!recording) {
+    recording = true;
+    seconds = 0;
+    res.send("Recording started");
+  } else {
+    res.send("Recording already started");
+  }
+});
+app.get("/stop", (req, res) => {
+  console.log("Someone made a request at /stop");
+  if (recording) {
+    recording = false;
+    //write the array to a csv file
+    var data = "";
+    for (let i in recordingData) {
+      data += recordingData[i];
+    }
+    //write to a csv file and store it in the bucket
+    const { Storage } = require("@google-cloud/storage");
+    const storage = new Storage();
+    const bucket = storage.bucket(bucketName);
+    //save filename as date and time 2020-11-11 10:53.csv
+
+    const filename = new Date().toISOString().replace(/:/g, "-") + ".csv";
+    const file = bucket.file(filename);
+    file.save(data, function (err) {
+      if (!err) {
+        console.log("File saved");
+        res.send("File saved");
+      } else {
+        console.log("Error saving file");
+        res.send("Error saving file");
+      }
+    });
+  } else {
+    res.send("Recording already stopped");
+  }
+});
+app.get("/recordings", (req, res) => {
+  console.log("Someone made a request at /recordings");
+  // List all objects in the "my-bucket" bucket as a array of filenames
+  const storage = new Storage();
+  async function listFiles() {
+    const [files] = await storage.bucket(bucketName).getFiles();
+    console.log("Files:");
+    var filenames = [];
+    files.forEach((file) => {
+      filenames.push(file.name);
+    });
+    res.send(filenames);
+  }
+  listFiles().catch(console.error);
+});
 
 const WebSocket = require("ws");
 

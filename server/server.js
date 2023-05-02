@@ -133,6 +133,12 @@ app.get("/recordings", (req, res) => {
   }
   listFiles().catch(console.error);
 });
+app.get("/game", (req, res) => {
+  res.sendFile(__dirname + "/game/index.html");
+});
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
 const WebSocket = require("ws");
 
@@ -140,8 +146,8 @@ const server = require("http").Server(app);
 const wss = new WebSocket.Server({ server });
 
 //Use an static html file for the main page
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+app.get("/admin", (req, res) => {
+  res.sendFile(__dirname + "admin/index.html");
 });
 
 //Client Id's array

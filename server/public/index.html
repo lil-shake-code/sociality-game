@@ -1,35 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>The Sociality Game Admin</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>The Sociality Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="index.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1 class="title">The Sociality Game Admin</h1>
-      <button id="start-btn" class="btn">Start Recording</button>
-      <p id="status" class="status">Not Recording</p>
-      <button id="stop-btn" class="btn" disabled>Stop Recording</button>
-      <table id="table" class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Filename</th>
-            <th>S</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>0</td>
-            <td>Sample</td>
-            <td>0</td>
-          </tr>
-        </tbody>
-      </table>
+    <header>
+      <h1>The Sociality Game</h1>
+    </header>
+    <div class="gallery">
+      <a href="/game/index.html"><img src="game1.png" alt="Game 1" /> </a>
+      <img src="game2.png" alt="Game 2" />
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script src="index.js"></script>
+    <section>
+      <h2>Instructions</h2>
+      <h3>Instructions for The Bat game</h3>
+      <p>1. Move around the map and find resources to consume.</p>
+      <p>2. Hide in trees when it is dark out.</p>
+      <p>3. Avoid the hawk.</p>
+    </section>
   </body>
 </html>

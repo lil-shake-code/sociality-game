@@ -64,7 +64,7 @@ stopBtn.addEventListener("click", () => {
   stopBtn.disabled = true;
 });
 
-function addTableRow(id, name, score) {
+function addTableRow(id, name) {
   const tableBody = document.querySelector("#table tbody");
   const newRow = document.createElement("tr");
   const idCell = document.createElement("td");
@@ -73,11 +73,11 @@ function addTableRow(id, name, score) {
 
   idCell.textContent = id;
   nameCell.textContent = name;
-  scoreCell.textContent = score;
+  scoreCell.textContent = 166;
 
   newRow.appendChild(idCell);
   newRow.appendChild(nameCell);
-  newRow.appendChild(scoreCell);
+  //newRow.appendChild(scoreCell);
 
   tableBody.appendChild(newRow);
 }
@@ -97,3 +97,38 @@ axios
   .catch((error) => {
     alert(error);
   });
+
+//if click on any row, download the file
+//add event listener to the table
+const tableBody = document.querySelector("#table tbody");
+tableBody.addEventListener("click", (event) => {
+  //check if the click was on a row
+  if (event.target.tagName === "TD") {
+    //get the row
+    const row = event.target.parentNode;
+
+    //get the cell under the column Filename
+    const filenameCell = row.children[1].textContent;
+
+    //make a get request to the server to get the file
+    // alert("making req to " + endpoint + "/download/" + filenameCell);
+    axios
+      .get(endpoint + "/download/" + filenameCell)
+      .then((response) => {
+        console.log(response.data);
+        //alert(response.data);
+        //download the file
+        const element = document.createElement("a");
+        const file = new Blob([response.data], {
+          type: "text/plain",
+        });
+        element.href = URL.createObjectURL(file);
+        element.download = filenameCell + ".csv";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+});

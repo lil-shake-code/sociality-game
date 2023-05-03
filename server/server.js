@@ -139,7 +139,27 @@ app.get("/game", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
-
+//download a file from the bucket when someone makes a get request at a particular url
+app.get("/download/:filename", (req, res) => {
+  //example url: /download/2020-11-11T10-53-00.000Z.csv
+  console.log("Someone made a request at /download");
+  const { Storage } = require("@google-cloud/storage");
+  const storage = new Storage();
+  const bucket = storage.bucket(bucketName);
+  const filename = req.params.filename;
+  const file = bucket.file(filename);
+  file.download(function (err, contents) {
+    if (!err) {
+      console.log("File downloaded");
+      res.send(contents);
+    } else {
+      console.log("Error downloading file");
+      // error is
+      console.log(err);
+      res.send(err);
+    }
+  });
+});
 const WebSocket = require("ws");
 
 const server = require("http").Server(app);
